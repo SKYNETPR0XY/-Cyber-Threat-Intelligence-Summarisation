@@ -8,7 +8,7 @@ A reproducible framework for benchmarking Large Language Models on cyber threat
 intelligence (CTI) summarisation, and for measuring the hallucination they
 introduce.
 
-MSc Cyber Security and Forensics, University of Westminster · W18850154.
+MSc Cyber Security and Forensics, University of Westminster 
 
 ---
 
