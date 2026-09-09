@@ -2,13 +2,12 @@
 Evaluating Large Language Models for Automated Cyber Threat Intelligence Summarisation
 
 
- ctieval — Evaluating LLMs for Automated CTI Summarisation
 
 A reproducible framework for benchmarking Large Language Models on cyber threat
 intelligence (CTI) summarisation, and for measuring the hallucination they
 introduce.
 
-MSc Cyber Security and Forensics, University of Westminster 
+MSc Cyber Security and Forensics, University of Westminster · W18850154.
 
 ---
 
@@ -108,7 +107,36 @@ python -m ctieval humaneval analyse --scores rater1=r1.csv --scores rater2=r2.cs
 # 8. Figures, tables, and the Chapter 6 results pack
 python -m ctieval report
 open results/report/results_pack.md
+
+# 9. Verify: recompute every statistic independently, and check the run against
+#    the parameters the proposal committed to
+python scripts/verify_statistics.py results
+python scripts/check_proposal_conformance.py
 ```
+
+Or run stages 1-8 under one gated command, which refuses to continue wherever
+the output would not be reportable:
+
+```bash
+python scripts/run_live_experiment.py          # checks keys, backends, BERTScore first
+python scripts/run_live_experiment.py --smoke  # 3 items, proves the wiring
+python scripts/run_live_experiment.py --resume # continue after annotation
+```
+
+### Testing the BERTScore path without the Hugging Face hub
+
+On a machine that cannot reach huggingface.co the metric cannot run at all, so
+the code path stays untested until the day of the real run. Build a tiny local
+backbone and exercise the genuine `bert-score` library offline:
+
+```bash
+python scripts/make_offline_bertscore_backbone.py
+python -m ctieval --config config/config.offline-bertscore.yaml demo
+```
+
+The weights are random, so **the scores are meaningless** — this proves the
+plumbing and nothing else. `check_proposal_conformance.py` fails if that backbone
+is ever configured for a real run.
 
 ### BERTScore is required, and `score` enforces it
 
@@ -189,3 +217,5 @@ docs/               dissertation source + architecture figure
 Intended for release under the MIT Licence. Report PDFs are not redistributed;
 the corpus records only content hashes and page references so a third party can
 reproduce it from their own copies.
+
+
