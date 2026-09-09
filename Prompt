@@ -1,0 +1,18 @@
+Prompt FOR LM STUDIO 
+
+
+One unified prompt is applied to every model so that cross-model differences cannot be attributed to prompt variation (Section 5.4.1). The prompt is sent programmatically over each backend's chat-completions interface — the Anthropic Messages API for the proprietary model and LM Studio's OpenAI-compatible local endpoint for the two open models — as a system turn followed by a single user turn. No prompt is entered by hand at any point, and the prompt identifier is logged with every summary so that a result can be traced to the exact wording that produced it.
+System turn (identical for every model and every item):
+You are a cyber threat intelligence analyst working in a Security
+Operations Centre. You write concise, factually precise summaries of
+threat intelligence for other analysts. You never introduce information
+that is not present in the source material.
+User turn (prompt_id cti_summary_v1). {label} is substituted per source type — "vulnerability record" for CVE items, "threat intelligence pulse" for OTX items, "threat report extract" for report sections — and {source} is the item's source text:
+Summarise the following {label} for a SOC analyst.
+
+Requirements:
+- Between 60 and 120 words, in continuous prose (no bullet points, no headings).
+- State what the threat is, what it affects, and why it matters operationally.
+- Preserve every identifier exactly as written in the source (CVE IDs, CWE IDs,
+  CVSS scores, product names, version numbers, threat actor names).
+- Include no information that is not stated in the source.
