@@ -154,10 +154,6 @@ Pass `--allow-semantic-fallback` only for plumbing checks. It records
 `semantic_sim_tfidf`, which is **not** BERTScore and must never be reported as
 such.
 
-## Offline dry run (no network, no GPU, no keys)
-
-Validates the whole pipeline end to end against a synthetic corpus with mock
-models. Every output is watermarked and cannot be reported as a result.
 
 ```bash
 python -m ctieval demo
